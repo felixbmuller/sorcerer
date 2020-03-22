@@ -1,0 +1,27 @@
+.playingCard {
+    width:70px;
+    height:100px;
+    border:1px solid #000;
+    font-size: 80px;
+    text-align: center;
+}
+
+.blueCard {
+    background-color: blue;
+    color: white;
+}
+
+.redCard {
+    background-color: red;
+    color: black;
+}
+
+.yellowCard {
+    background-color: yellow;
+    color: black;
+}
+
+.greenCard {
+    background-color: green;
+    color: black;
+}
