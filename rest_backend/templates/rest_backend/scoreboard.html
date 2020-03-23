@@ -1,0 +1,16 @@
+<table>
+    <tr>
+        <th></th>
+        {% for player in scoreboardPlayers %}
+            <th colspan="2">{{player}}</th>
+        {% endfor %}
+    </tr>
+    {% for idx, row in scoreboardTable %}
+    <tr>
+        <td><b>{{idx}}</b></td>
+        {% for entry in row %}
+            <td>{{entry}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>

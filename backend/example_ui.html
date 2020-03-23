@@ -4,12 +4,95 @@
     <link rel="stylesheet" type="text/css" href="sorcerer_ui.css">
 </head>
 <body>
+        <div id="scoreboard">
+            <h3>Scoreboard</h3>
         <table>
             <tr>
-                <th>Test</th>
+                <th></th>
+                <th colspan="2">Dog</th>
+                <th colspan="2">Fox</th>
+                <th colspan="2">Unicorn</th>
+            </tr>
+            <tr>
+                <td><b>1</b></td>
+                <td>20</td>
+                <td>0</td>
+                <td>30</td>
+                <td>1</td>
+                <td>-10</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td><b>2</b></td>
+                <td>40</td>
+                <td>0</td>
+                <td>50</td>
+                <td>0</td>
+                <td>-30</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td><b>3</b></td>
+                <td></td>
+                <td>0</td>
+                <td></td>
+                <td>1</td>
+                <td></td>
+                <td></td>
             </tr>
         </table>
-    <div class="playingCard blueCard">7</div>
-    <div class="playingCard greenCard">N</div>
+        </div>
+
+    <div id="main">
+
+    <div class="topcorner">
+        <button>Abort Game</button><br />
+        <b>You are: </b> Fox
+        <br>
+        <h3>Trump</h3>
+        <div class="playingCard BCard">7</div>
+    </div>
+
+    <div id="infoBlock">
+        <h2>Round 3 - Announce Phase</h2>
+        
+        <div class="gameState">
+        <form class="form-inline" action="">
+            <label for="count">How many tricks do you take (must not say 1)?</label>
+            <input type="text" id="count" name="count">
+            <button type="submit">Submit</button>
+        </form> 
+        </div>
+        <br>
+        <div class="gameState">
+            Waiting for Unicorn.
+        </div><br>
+        <div class="gameState">Click a hand card to play it.</div>
+        
+    </div>
+
+    <div id="table">
+        <h3>Table</h3>
+        <table>
+            <tr>
+                <th>Dog</th>
+                <th>Fox</th>
+            </tr>
+            <tr>
+                <td><div class="playingCard BCard">7</div></td>
+                <td><div class="playingCard GCard">N</div></td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="handcards">
+        <h3>Hand Cards</h3>
+        <div class="playingCard BCard">7</div>
+        <div class="playingCard GCard">N</div>
+    </div>
+
+</div>
+
+    
 </body>
 </html>

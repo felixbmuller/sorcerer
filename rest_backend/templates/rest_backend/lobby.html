@@ -1,0 +1,53 @@
+{% load static %}
+<html>
+<head>
+    <title>Sorcerer v0.1</title>
+    <link rel="stylesheet" type="text/css" href="{% static "sorcerer_ui.css" %}">
+</head>
+<body>
+    {% if hasLastGame %}
+    <div id="scoreboard">
+        <h3>Last Game</h3>
+        {% include "rest_backend/scoreboard.html" %}
+    </div>
+    {% endif %}
+
+    <div id="main">
+
+    <div class="topcorner">
+        <b>You are: </b> {{thisPlayer}}
+    </div>
+
+    <div id="infoBlock">
+        <h2>Lobby</h2>
+
+    <button id="startbutton" onclick="backend_call('startgame', {})">Start Game</button>
+
+        <h3>Players</h3>
+
+        <ul>
+            {% for player in lobbyPlayers %}
+            <li>{{player}}</li>
+            {% endfor %}
+        </ul>
+
+    {% if hasLastWinners %}
+    <div id="handcards">
+        
+        <h3>Previous Results</h3>
+        <ol>
+        {% for player, score in ranking %}
+            <li>{{player}} ({{score}})</li>
+        {% endfor %}
+        </ol>
+    </div>
+    {% endif %}
+
+</div>
+
+<div class="bottomcorner">
+    Last refresh: {{lastRefresh}}
+</div>
+    
+</body>
+</html>
