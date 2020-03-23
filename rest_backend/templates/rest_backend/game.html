@@ -1,10 +1,3 @@
-{% load static %}
-<html>
-<head>
-    <title>Sorcerer v0.1</title>
-    <link rel="stylesheet" type="text/css" href="{% static "sorcerer_ui.css" %}">
-</head>
-<body>
     <div id="scoreboard">
         <h3>Scoreboard</h3>
         {% include "rest_backend/scoreboard.html" %}
@@ -103,5 +96,3 @@
     Last refresh: {{lastRefresh}}
 </div>
     
-</body>
-</html>

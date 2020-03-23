@@ -13,6 +13,9 @@ lobby = Lobby()
 
 view = View(lobby)
 
+def main(request):
+    return render(request, "rest_backend/main.html", {})
+
 def getview(request):
     try:
         params = request.GET
