@@ -26,10 +26,6 @@ function backend_call(action, params, silent=False) {
     xhttp.send();
 }
 
-function update_page() {
-
-}
-
 function on_startup() {
 
     var name = prompt("Please enter your name")
@@ -37,6 +33,8 @@ function on_startup() {
     if (name == null) {
         name = ""
     }
+
+    document.body.innerHTML = "Asked for name: " + name
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
