@@ -191,7 +191,7 @@ class CardManager:
             c[0] for c in self.roundCards.values() if "Z" not in c and "N" not in c)
         if relevantColor in card:
             return  # right color
-        if any(relevantColor in c for c in self.handCards[player]):
+        if any(relevantColor in c for c in self.handCards[player] if "N" not in c and "Z" not in c):
             raise GameError("You must play a card of the led suit!")
 
     def finishTrick(self) -> Player:
