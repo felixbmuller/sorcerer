@@ -4,6 +4,9 @@
 
 - Better way of showing players the last card instead of long sleep (and check for race conditions)
 - Farbe bei Narren und Zauberern entfernen
+- Not reloading the input field
+- Keine Trumpffarbe, es lag nur eine Karte in der angespielten Farbe -> höchste Zahle aber falsche Farbe hat gestochen x2 -> connected to the color problem (TODO in code)
+- Handkarten sortieren
 
 ## Game Logic
 

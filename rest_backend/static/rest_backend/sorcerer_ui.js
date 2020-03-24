@@ -48,7 +48,7 @@ function on_startup() {
     xhttp.send();
 }
 
-REFRESH_INTERVAL = 500
+REFRESH_INTERVAL = 1000
 
 function refresh_page() {
 

@@ -84,7 +84,7 @@ class View():
             "scoreboardPlayers": players,
             "scoreboardTable": scoreboard_table,
             "thisPlayer": player,
-            "hasTrumpCard": cards.trumpColor != "",
+            "hasTrumpCard": cards.trumpColor != "-",
             "trump": self._convertCard(cards.trumpCard),
             "currentRound": pad.round + 1,
             "currentPhase": phase,

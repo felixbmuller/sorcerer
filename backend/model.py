@@ -149,13 +149,13 @@ class CardManager:
             self.handCards[p] = [self.drawPile.pop() for _ in range(noOfCards)]
         # select trump
         if not self.drawPile:  # no cards left
-            self.trumpColor = ""
+            self.trumpColor = "-"
             self.trumpCard = ""
         else:
             self.trumpCard = self.drawPile.pop()
             if "N" in self.trumpCard or "Z" in self.trumpCard:
                 # no trump if narr/zauberer
-                self.trumpColor = ""
+                self.trumpColor = "-"
             else:
                 self.trumpColor = self.trumpCard[0]
 
@@ -213,7 +213,7 @@ class CardManager:
             return next(p for p, c in self.roundCards.items() if "Z" in c)
 
         if any(self.trumpColor in c for c in self.roundCards.values() if "N" not in c):
-            relevantColor = self.trumpColor
+            relevantColor = self.trumpColor # TODO fixme
         else:
             relevantColor = next(
                 c[0] for c in self.roundCards.values() if "N" not in c)
