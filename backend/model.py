@@ -225,7 +225,7 @@ class CardManager:
     def _createDrawPile(self):
         self.drawPile = []
         for c in ["R", "G", "B", "Y"]:
-            for n in list(range(1, 13)) + ["N", "Z"]:
+            for n in list(range(1, 14)) + ["N", "Z"]:
                 self.drawPile.append(f"{c}{n}")
         random.shuffle(self.drawPile)
 
