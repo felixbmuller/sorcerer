@@ -8,6 +8,8 @@
 - Keine Trumpffarbe, es lag nur eine Karte in der angespielten Farbe -> höchste Zahle aber falsche Farbe hat gestochen x2 -> connected to the color problem (TODO in code) -> should be fixed
 - Handkarten sortieren
 - Keine 13 -> fixed
+- Forbid joining lobby if active game
+- Leichtes grau als Hintergrund
 
 ## Game Logic
 
