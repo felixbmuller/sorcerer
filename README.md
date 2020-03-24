@@ -1,5 +1,9 @@
 # sorcerer
 
+## Improvement TODOS
+
+- Better way of showing players the last card instead of long sleep (and check for race conditions)
+
 ## Game Logic
 
 1. An user visits the landing page

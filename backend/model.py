@@ -5,6 +5,7 @@ import secrets
 import operator
 from enum import Enum
 import logging
+import time
 
 #animal_names = [
 #    "Wunderpus photogenicus",
@@ -306,6 +307,8 @@ class Game:
         self.currentPlayerIdx = (self.currentPlayerIdx + 1) % len(self.players)
 
         if self.currentPlayerIdx == self.trickStartPlayerIdx:
+            time.sleep(5.0) # wait for all players to see the card
+
             trickTaker = self.cardManager.finishTrick()
             self.padOfTruth.addTrick(trickTaker)
             # init for next trick
