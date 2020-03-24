@@ -3,7 +3,6 @@
 ## Improvement TODOS
 
 - Better way of showing players the last card instead of long sleep (and check for race conditions)
-  - Show message instead of waiting for player
 - Farbe bei Narren und Zauberern entfernen
 
 ## Game Logic

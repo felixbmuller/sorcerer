@@ -56,17 +56,20 @@ class View():
 
         scoreboard_table = self._genScoreboard()
 
-        assert game.gameState in [GameState.PLAY, GameState.ANNOUNCE]
+        # Play for PLAY and PAUSE
+        phase = "Announce" if game.gameState == GameState.ANNOUNCE else "Play"
 
-        phase = "Play" if game.gameState == GameState.PLAY else "Announce"
-
-        player_state = "waiting"
-        if players[game.currentPlayerIdx] == player:
+        if game.gameState == GameState.PAUSE:
+            player_state = "pause"
+        elif players[game.currentPlayerIdx] == player:
             # active
             if game.gameState == GameState.PLAY:
                 player_state = "play"
             else:
                 player_state = "tricks"
+        else:
+            player_state = "waiting"
+            
 
         illegal_tricks = -1 # no limitation
         if player_state == "tricks":

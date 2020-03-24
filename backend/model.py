@@ -233,8 +233,9 @@ class CardManager:
 class GameState(Enum):
     ANNOUNCE = 1
     PLAY = 2
-    FINISHED = 3
-    ABORTED = 4
+    PAUSE = 3
+    FINISHED = 4
+    ABORTED = 5
 
 
 class Game:
@@ -307,7 +308,9 @@ class Game:
         self.currentPlayerIdx = (self.currentPlayerIdx + 1) % len(self.players)
 
         if self.currentPlayerIdx == self.trickStartPlayerIdx:
+            self.gameState = GameState.PAUSE
             time.sleep(5.0) # wait for all players to see the card
+            self.gameState = GameState.PLAY
 
             trickTaker = self.cardManager.finishTrick()
             self.padOfTruth.addTrick(trickTaker)

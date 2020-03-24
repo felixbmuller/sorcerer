@@ -54,6 +54,8 @@
                 </div>
             {% elif playerState == "play" %}
                 Click a hand card to play it.
+            {% elif playerState == "pause" %}
+                Pause between rounds (5sec).
             {% else %}
                 Waiting for {{activePlayer}}.
             {% endif %}
