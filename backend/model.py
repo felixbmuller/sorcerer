@@ -6,15 +6,23 @@ import operator
 from enum import Enum
 import logging
 
-animal_names = [
-    "Wunderpus photogenicus",
-    "Spiny lumpsucker",
-    "Pleasing fungus beetle",
-    "Pink fairy armadillo",
-    "Raspberry crazy ant",
-    "Satanic leaf-tailed gecko",
-]
+#animal_names = [
+#    "Wunderpus photogenicus",
+#    "Spiny lumpsucker",
+#    "Pleasing fungus beetle",
+#    "Pink fairy armadillo",
+#    "Raspberry crazy ant",
+#    "Satanic leaf-tailed gecko",
+#]
 
+animal_names = [
+    "Cat",
+    "Dog",
+    "Fox",
+    "Salmon",
+    "Gecko",
+    "Ant",
+]
 
 class GameError(Exception):
     """ An error that can happen if a player tries something illegal"""
@@ -46,6 +54,7 @@ class PadOfTruth:
     def totalRounds(self) -> int:
         """return the number of total rounds (depending on the number of players)"""
         return 60 // len(self.players)
+        #return 3
 
     def lastRound(self) -> bool:
         return self.round + 1 == self.totalRounds()
@@ -89,7 +98,7 @@ class PadOfTruth:
             if diff == 0:
                 points = 20 + 10 * self.actualTricks[self.round][p]
             else:
-                points = -10 * self.actualTricks[self.round][p]
+                points = -10 * diff
 
             if self.round == 0:
                 new_points[p] = points
@@ -238,7 +247,7 @@ class Game:
     ranking: List[Tuple[Player, int]]
 
     def __init__(self, players: List[Player]):
-        self.players = players
+        self.players = list(players)
         self.padOfTruth = PadOfTruth(self.players)
         self.cardManager = CardManager(self.players)
 
@@ -387,7 +396,7 @@ class Lobby:
         self.game.announceTricks(player, nint)
 
     def _getFreeName(self):
-        for n in random.shuffle(animal_names):
-            if all(p.name != n for p in self.players):
+        for n in random.sample(animal_names, len(animal_names)):
+            if all(p != n for p in self.players):
                 return n
         assert False, "Tried to find a free name even though all were occupied"
