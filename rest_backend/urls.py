@@ -11,4 +11,5 @@ urlpatterns = [
     path('stopgame/', views.stopgame, name='stopgame'),
     path('announcetricks/', views.announcetricks, name='announcetricks'),
     path('playcard/', views.playcard, name='playcard'),
+    path('getjson/', views.getjson, name='getjson'),
 ]

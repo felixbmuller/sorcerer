@@ -1,6 +1,8 @@
 import datetime
+from typing import List
 
-from backend.model import Lobby, PadOfTruth, CardManager, GameState, Player, GameError
+from model import Lobby, PadOfTruth, CardManager, GameState, Player, GameError
+
 
 class View():
 
@@ -32,14 +34,13 @@ class View():
             ranking = None
 
         data = {
-            "scoreboardPlayers": scoreboardPlayers,
+            "playersAbbreviated": self._generatePlayersAbbreviated(scoreboardPlayers),
             "scoreboardTable": scoreboardTable,
             "hasLastGame": hasLastGame,
             "thisPlayer": player,
-            "lobbyPlayers": self.lobby.players,
+            "players": self.lobby.players,
             "hasLastWinners": hasLastWinners,
             "ranking": ranking,
-            "lastRefresh": str(datetime.datetime.now().time()),
         }
         return data
 
@@ -69,9 +70,8 @@ class View():
                 player_state = "tricks"
         else:
             player_state = "waiting"
-            
 
-        illegal_tricks = -1 # no limitation
+        illegal_tricks = -1  # no limitation
         if player_state == "tricks":
             illegal_tricks = game.getIllegalTricks(player)
 
@@ -81,7 +81,7 @@ class View():
                 actualTricks.append(pad.actualTricks[-1].get(p, 0))
 
         data = {
-            "scoreboardPlayers": players,
+            "playersAbbreviated": self._generatePlayersAbbreviated(players),
             "scoreboardTable": scoreboard_table,
             "thisPlayer": player,
             "hasTrumpCard": cards.trumpColor != "-",
@@ -91,13 +91,38 @@ class View():
             "playerState": player_state,
             "illegalTricks": illegal_tricks,
             "activePlayer": players[game.currentPlayerIdx],
-            "tablePlayers": cards.roundCards.keys(),
+            "tablePlayers": list(cards.roundCards.keys()),
             "tableCards": [self._convertCard(c) for c in cards.roundCards.values()],
             "handCards": [self._convertCard(c) for c in cards.handCards[player]],
-            "lastRefresh": str(datetime.datetime.now().time()),
+            "players": players,
             "actualTricks": actualTricks,
         }
         return data
+
+    def data(self, player: Player):
+        isLobbyMode = self.isLobbyMode()
+        if isLobbyMode:
+            d = self.lobbyData(player)
+        else:
+            d = self.gameData(player)
+        d["isLobbyMode"] = isLobbyMode
+        return d
+
+    def _generatePlayersAbbreviated(self, players: List[Player]):
+        if players is None:
+            return None
+
+        abbreviations = [(p[0] if p != "Anna Lena" else "AL") for p in players]
+
+        i = 1
+
+        while len(set(abbreviations)) < len(players):
+            # some prefixes are not unique
+            abbreviations = [(p[:i+1] if p != "Anna Lena" else "AL")
+                             for p in players]
+            i += 1
+
+        return abbreviations
 
     def _genScoreboard(self):
         """ render table html ready """
@@ -118,9 +143,13 @@ class View():
                     row.append("")
 
             scoreboard_table.append(row)
-        return list(enumerate(scoreboard_table, start=1))
+        return scoreboard_table
 
     def _convertCard(self, card: str):
+        # "Z" for suit renders no suit
         if card == "":
-            return {"full": card, "suit": "B", "rank": "-"}
-        return {"full": card, "suit": card[0], "rank": card[1:]}
+            return {"full": card, "suit": "Z", "rank": "-"}
+        elif card[1:] in ["Z", "N"]:
+            return {"full": card, "suit": "Z", "rank": card[1:]}
+        else:
+            return {"full": card, "suit": card[0], "rank": card[1:]}

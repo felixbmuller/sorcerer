@@ -1,12 +1,12 @@
 import sys
 import traceback
 import logging
+import json
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
 
-from backend import view_stub
-from backend.model import Lobby, GameError
+from model import Lobby, GameError
 from backend.view import View
 
 lobby = Lobby()
@@ -26,6 +26,11 @@ def getview(request):
     except GameError as e:
         return _respond_error(e, request)
 
+def getjson(request):
+    try:
+        return HttpResponse(json.dumps(view.data(request.GET["player"])), content_type="application/json")
+    except GameError as e:
+        return _respond_error(e, request)
 
 def addplayer(request):
     return _perform_request(request, lobby.addPlayer, name=request.GET.get("player", ""))

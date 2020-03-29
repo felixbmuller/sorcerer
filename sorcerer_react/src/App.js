@@ -4,6 +4,8 @@ import './App.scss';
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
+import $ from 'jquery';
+
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -16,6 +18,7 @@ import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Spinner from 'react-bootstrap/Spinner'
+import Modal from 'react-bootstrap/Modal'
 
 import GridLayout from 'react-grid-layout';
 
@@ -65,6 +68,7 @@ var view_stub = {
   ],
   "actualTricks": [0, 2, 1],
   "hasLastGame": true,
+  "isLobbyMode": true,
 }
 
 function PlayingCard(props) {
@@ -110,7 +114,7 @@ class PlayerList extends React.Component {
     const badges = []
 
     if (name === this.props.thisPlayer) {
-      badges.push(<Badge variant="secondary">You</Badge>)
+      badges.push(<Badge variant="secondary" style={{marginRight: "0.5em"}}>You</Badge>)
     }
 
     if (this.props.actualTricks[idx] > 0) {
@@ -159,9 +163,13 @@ function Handcards(props) {
 }
 
 function TrickAnnouncement(props) {
+  let text = "How many tricks do you take?"
+  if (props.illegalTricks != -1) {
+    text += " (not " + props.illegalTricks + ")"
+  }
   return <Form inline className="gameControlForm">
-    <Form.Label>How many tricks do you take?</Form.Label>
-    <Form.Control type="number" value="0" id="tricksInput">
+    <Form.Label>{text}</Form.Label>
+    <Form.Control type="number" defaultValue="0" min="0" id="tricksInput" active>
     </Form.Control>
     <Button variant="primary" onClick={api.announceTricks}>
       Submit
@@ -172,13 +180,13 @@ function TrickAnnouncement(props) {
 function GameControl(props) {
   let content = null
   if (props.playerState == "waiting") {
-    content = "Waiting for {props.activePlayer}."
+    content = "Waiting for " + props.activePlayer + "."
   } else if (props.playerState == "play") {
     content = "Click a hand card to play it."
   } else if (props.playerState == "pause") {
     content = "Pause between rounds."
   } else {
-    content = <TrickAnnouncement></TrickAnnouncement>
+    content = <TrickAnnouncement illegalTricks={props.illegalTricks}></TrickAnnouncement>
   }
   const name = "Round " + props.currentRound + " - " + props.currentPhase
   return <UISection sectionId="gameControl" sectionName={name}>
@@ -199,14 +207,19 @@ function UISection(props) {
   </div>
 }
 
-function App() {
-  return <Game state={view_stub}></Game>
+export function App(props) {
+  if (props.state.isLobbyMode) {
+    return <Lobby state={props.state}></Lobby>
+  } else {
+    return <Game state={props.state}></Game>
+  }
 }
 
 function Lobby(props) {
+  // TODO Add ranking of last game
   let scoreboard = null
   if (props.state.hasLastGame) {
-    scoreboard = <UISection sectionId="scoreboard" sectionName="Scoreboard">
+    scoreboard = <UISection sectionId="scoreboard" sectionName="Last Game">
       <Scoreboard playersAbbreviated={props.state["playersAbbreviated"]}
           scoreboardTable={props.state["scoreboardTable"]}></Scoreboard>
     </UISection>
@@ -244,16 +257,17 @@ function Game(props) {
       <div id="main">
         <GameControl
           playerState={props.state["playerState"]}
-          activePlayer={props.state["activePlaer"]}
+          activePlayer={props.state["activePlayer"]}
           currentRound={props.state["currentRound"]}
           currentPhase={props.state["currentPhase"]}
+          illegalTricks={props.state["illegalTricks"]}
         ></GameControl>
         <UISection sectionId="tableCards" sectionName="Table">
           <TableCards tableCards={props.state["tableCards"]}
             tablePlayers={props.state["tablePlayers"]}></TableCards>
         </UISection>
         <UISection sectionId="handCards" sectionName="Handcards">
-          <Handcards cards={props.state["hand_cards"]} 
+          <Handcards cards={props.state["handCards"]} 
             playable={props.state["playerState"] == "play"}></Handcards>
         </UISection>
       </div>
@@ -272,4 +286,33 @@ function Game(props) {
   );
 }
 
+export function NameModal(props) {
+  // TODO Sane behaviour for ENTER
+  // TODO Fix this ting
+  var showModal = true
+  var handler = function() {
+    const input = $("#nameInput").val()
+    showModal = false
+    props.modalHandler(input)
+  }
+  return <Modal show={showModal}>
+          <Modal.Header>
+            <Modal.Title>Choose a Name</Modal.Title>
+          </Modal.Header>
+  <Modal.Body>
+    <p>Enter a player name (or empty for a random name)</p>
+    <Form inline onSubmit={handler}>
+    <Form.Control type="text" id="nameInput">
+    </Form.Control>
+  </Form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="primary" onClick={handler}>
+      Select
+    </Button>
+  </Modal.Footer>
+</Modal>
+}
+
 export default App;
+
