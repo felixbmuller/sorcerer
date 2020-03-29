@@ -244,6 +244,8 @@ function Lobby(props) {
           <Button variant="primary" onClick={api.removePlayer}>Leave Lobby</Button>
         </UISection>
     </div>
+    <Button variant="secondary" onClick={api.resetServer} className="bottomcorner">
+          Reset Server</Button>
   </div>
 }
 

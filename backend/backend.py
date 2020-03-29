@@ -23,6 +23,14 @@ def getjson():
     except GameError as e:
         return _respond_error(e)
 
+@app.route("/rest/resetserver")
+def resetserver():
+    global lobby
+    global view
+    lobby = Lobby()
+    view = View(lobby)
+    return "OK"
+
 @app.route("/rest/addplayer")
 def addplayer():
     return _perform_request(request, lobby.addPlayer, name=request.args.get("player", ""))

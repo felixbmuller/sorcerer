@@ -83,6 +83,19 @@ function backend_call(action, params) {
     xhttp.send();
 }
 
+export function resetServer() {
+    const ok = window.confirm(
+            "You are about to reset the game server.\n\nThis will kick everybody " +
+            "out of the lobby. You should only do this if there is a " +
+            "non-responding player (e.g. because somebody closed this page " +
+            "without clicking 'Leave lobby' beforehand). Everybody currently in " +
+            "the lobby will see a weird error message and needs to reload the page.\n\n" +
+            "Do you really want to continue?")
+    if (ok) {
+        backend_call("resetserver", {})
+    }
+}
+
 export function playCard(card) {
     backend_call("playcard", {player: thisPlayer, card: card})
 }

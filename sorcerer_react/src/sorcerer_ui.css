@@ -119,3 +119,9 @@
     padding: 1ex;
     margin: 2ex;
 }
+
+.bottomcorner {
+    position:absolute;
+    bottom:0;
+    right:0;
+}
