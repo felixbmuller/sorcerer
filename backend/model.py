@@ -6,6 +6,7 @@ import operator
 from enum import Enum
 import logging
 import time
+import functools
 
 #animal_names = [
 #    "Wunderpus photogenicus",
@@ -112,6 +113,23 @@ class PadOfTruth:
         of the players. This used the points from the last finished round """
         return sorted(self.cumulativeCount[-1].items(), key=operator.itemgetter(1), reverse=True)
 
+def cardSortKey(card: str, trump: str):
+    """ create a reasonable order for hand cards """
+    if "N" in card:
+        return 0
+    if "Z" in card:
+        return 1000
+    rank = int(card[1:])
+    if trump in card:
+        return 900 + rank
+    # get a consistent order of colors, the concrete order does not really matter
+    color2value = {
+        "R": 200,
+        "G": 300,
+        "B": 400,
+        "Y": 500
+    }
+    return color2value[card[0]] + rank
 
 class CardManager:
     """ This class handles everything related to cards, i.e. draw and discard pile, hand cards, 
@@ -158,6 +176,9 @@ class CardManager:
                 self.trumpColor = "-"
             else:
                 self.trumpColor = self.trumpCard[0]
+
+        for p in self.players:
+            self.handCards[p].sort(key=functools.partial(cardSortKey, trump=self.trumpColor))
 
     def roundFinished(self) -> bool:
         return not any(hc for hc in self.handCards.values())
@@ -362,6 +383,8 @@ class Lobby:
                 "Cannot add another player, the maximum allowed number is 6")
         if name in self.players:
             raise GameError(f"There is already a player with name {name}")
+        if self.hasActiveGame():
+            raise GameError("Cannot join lobby as there is currently an active game.")
         if not name:
             name = self._getFreeName()
         self.players.append(name)

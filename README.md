@@ -3,11 +3,10 @@
 ## Improvement TODOS
 
 - Better way of showing players the last card instead of long sleep (low prio)
-- Not reloading the input field!!
-- Handkarten sortieren
-- Forbid joining lobby if active game
+- ~~Handkarten sortieren~~
+- ~~Forbid joining lobby if active game~~
 - Leichtes grau als Hintergrund
-- add "reset server" button
+- ~~add "reset server" button~~
 - improve error messages
 - add favicon
 - add winner ranking
