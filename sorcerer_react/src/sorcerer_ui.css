@@ -1,7 +1,7 @@
 .playingCard {
-    width:70px;
-    height:100px;
-    border:1px solid #000;
+    width: 70px;
+    height: 100px;
+    border: 1px solid #000;
     font-size: 50px;
     text-align: center;
     float: left;
@@ -28,30 +28,59 @@
     color: black;
 }
 
-table {
-    border-collapse: collapse;
-}
-  
-table, th, td {
-    border: 1px solid rgb(114, 114, 114);
-}
-
-th, td {
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
-th {
-    background-color: rgb(172, 172, 172);
-}
-
-tr:hover {background-color: #f5f5f5;}
-
 #scoreboard {
     float: left;
-    margin-left: 1em;
+    margin-left: 2ex;
+    margin-top: 2ex;
+    margin-right: 2ex;
+}
+
+#main {
+    float: left;
+    margin-left: 5em;
+}
+
+#gameControl {
+    margin: 2ex;
+}
+
+#gameControlContent {
+    margin: 1ex;
+}
+
+.gameControlForm label {
+    margin-right: 1ex;
+}
+
+.gameControlForm input {
+    margin-right: 1ex;
+}
+
+#tableCards {
+    margin: 2ex;
+    margin-top: 4ex;
+}
+
+#handCards {
+    margin-left: 2ex;
+    position: absolute;
+    bottom: 2ex;
+}
+
+#rightPane {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#players {
+    margin: 2ex;
+    min-width: 25ex;
+}
+
+#trump {
+    margin: 2ex;
+    align-content: center;
 }
 
 .gameState {
@@ -59,68 +88,34 @@ tr:hover {background-color: #f5f5f5;}
     padding: 10px;
 }
 
-.form-inline {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-  }
-  
-  /* Add some margins for each label */
-  .form-inline label {
-      margin-right: 5px;
-  }
-  
-  /* Style the input fields */
-  .form-inline input {
-    vertical-align: middle;
-    margin-right: 5px;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-  }
-  
-  /* Style the submit button */
-  button {
-    padding: 10px 20px;
-    background-color: dodgerblue;
-    border: 1px solid #ddd;
-    color: white;
-  }
+#tricksInputField {
+    width: 2m;
+}
 
-  #startbutton {
-      font-size: large;
-  }
-  
-  .form-inline button:hover {
-    background-color: royalblue;
-  }
 
-  #handcards {
+.unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+#waitingCard {
     position: absolute;
-    bottom: 2ex;
-  }
+    width: 350px;
+    height: 300px;
+    z-index: 15;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -175px;
+}
 
-  #actualTricks {
-      position: absolute;
-      bottom: 2ex;
-  }
-
-  #main {
-    float: left;
-    margin-left: 5em;
-  }
-
-
- .topcorner{
-    position:absolute;
-    top:0;
-    right:0;
-   }
-
-.bottomcorner {
-    position:absolute;
-    bottom:0;
-    right:0;
-    font-size: x-small;
-    padding: 3px;
+#waitingText {
+    padding: 1ex;
+    margin: 2ex;
 }

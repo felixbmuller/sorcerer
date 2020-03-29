@@ -15,8 +15,11 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import Spinner from 'react-bootstrap/Spinner'
 
 import GridLayout from 'react-grid-layout';
+
+import * as api from "./apiConnector"
 
 var view_stub = {
   "players": ["Felix", "Anna Lena", "Cat"],
@@ -48,7 +51,7 @@ var view_stub = {
   "trump": { "suit": "Y", "rank": "Z" },
   "currentRound": 3,
   "currentPhase": "Play",
-  "playerState": "tricks",
+  "playerState": "play",
   "illegal_tricks": 0,
   "activePlayer": "Fox",
   "tablePlayers": ["Cat", "Dog"],
@@ -61,6 +64,7 @@ var view_stub = {
     { "suit": "G", "rank": "Z" },
   ],
   "actualTricks": [0, 2, 1],
+  "hasLastGame": true,
 }
 
 function PlayingCard(props) {
@@ -68,22 +72,29 @@ function PlayingCard(props) {
   if (["R", "G", "B", "Y"].includes(props.value["suit"])) {
     colorCode = props.value["suit"] + "Card"
   }
-  return <div className={["playingCard", colorCode].join(" ")}>{props.value["rank"]}
-  </div>
+  if (props.playable) {
+    return (
+      <div className={["playingCard", colorCode, "unselectable", "clickable"].join(" ")}
+        onClick={() => api.playCard(props.value["full"])}>
+        {props.value["rank"]}
+      </div>)
+  } else {
+    return <div className={["playingCard", colorCode, "unselectable"].join(" ")}>
+      {props.value["rank"]}
+    </div>
+  }
 }
-
-// TODO Move wrapping to extra component
 
 function Scoreboard(props) {
   return <Table striped bordered size="sm">
     <thead>
       <th>#</th>
-      {view_stub["playersAbbreviated"].map((val, idx) => {
+      {props.playersAbbreviated.map((val, idx) => {
         return <th colSpan="2">{val}</th>
       })}
     </thead>
     <tbody>
-      {view_stub["scoreboardTable"].map((val, idx) => {
+      {props.scoreboardTable.map((val, idx) => {
         return <tr>
           <td><strong>{idx + 1}</strong></td>
           {val.map((val) => { return <td>{val}</td> })}
@@ -98,18 +109,18 @@ class PlayerList extends React.Component {
   renderPlayer(name, idx) {
     const badges = []
 
-    if (name === view_stub["thisPlayer"]) {
+    if (name === this.props.thisPlayer) {
       badges.push(<Badge variant="secondary">You</Badge>)
     }
 
-    if (view_stub["actualTricks"][idx] > 0) {
+    if (this.props.actualTricks[idx] > 0) {
       badges.push(
         <OverlayTrigger overlay={
           <Tooltip>
             Tricks taken this round
         </Tooltip>
         }>
-          <Badge variant="primary">{view_stub["actualTricks"][idx]}</Badge>
+          <Badge variant="primary">{this.props.actualTricks[idx]}</Badge>
         </OverlayTrigger>)
     }
 
@@ -119,7 +130,7 @@ class PlayerList extends React.Component {
 
   render() {
     return <ListGroup variant="flush">
-      {view_stub["players"].map(this.renderPlayer)}
+      {this.props.players.map(this.renderPlayer, this)}
     </ListGroup>
   }
 }
@@ -140,7 +151,7 @@ function Handcards(props) {
     <Row>
       {props.cards.map((val) => {
         return <Col>
-          <PlayingCard value={val}></PlayingCard>
+          <PlayingCard value={val} playable={props.playable}></PlayingCard>
         </Col>
       })}
     </Row>
@@ -148,60 +159,121 @@ function Handcards(props) {
 }
 
 function TrickAnnouncement(props) {
-  return <Form>
-    <Form.Row>
-      <Form.Label>How many tricks do you take?</Form.Label>
-      <Form.Control as="select" multiple>
-      <option>1</option>
-      <option>2</option>
-      <option>4</option>
-      <option>5</option>
+  return <Form inline className="gameControlForm">
+    <Form.Label>How many tricks do you take?</Form.Label>
+    <Form.Control type="number" value="0" id="tricksInput">
     </Form.Control>
-    <Button variant="primary" type="submit">
-    Submit
+    <Button variant="primary" onClick={api.announceTricks}>
+      Submit
   </Button>
-    </Form.Row>
-</Form>
+  </Form>
 }
 
-// class MainGrid extends React.Component {
-//   render() {
-//     // layout is an array of objects, see the demo for more complete usage
-//     const layout = [
-//       {i: 'players', x: 0, y: 0, w: 1, h: 1},
-//       {i: 'scoreboard', x: 0, y: 1, w: 1, h: 3},
-//       {i: 'handcards', x: 1, y: 3, w: 3, h: 1}
-//     ];
-//     return (
-//       <GridLayout className="layout" layout={layout} cols={4} rowHeight={30} width={1200}>
-//         <div key="players">
-//         <Card>
-//             <Card.Header>Players</Card.Header>
-//             <PlayerList></PlayerList>
-//           </Card>
-//         </div>
-//         <div key="scoreboard">
-//         <Card>
-//             <Card.Header>Scoreboard</Card.Header>
-//             <Scoreboard></Scoreboard>
-//           </Card>
-//         </div>
-//         <div key="handcards">
-//         <Card>
-//             <Card.Header>Hand Cards</Card.Header>
-//             <Handcards cards={view_stub["hand_cards"]} ></Handcards>
-//           </Card>
-//         </div>
-//       </GridLayout>
-//     )
-//   }
-// }
+function GameControl(props) {
+  let content = null
+  if (props.playerState == "waiting") {
+    content = "Waiting for {props.activePlayer}."
+  } else if (props.playerState == "play") {
+    content = "Click a hand card to play it."
+  } else if (props.playerState == "pause") {
+    content = "Pause between rounds."
+  } else {
+    content = <TrickAnnouncement></TrickAnnouncement>
+  }
+  const name = "Round " + props.currentRound + " - " + props.currentPhase
+  return <UISection sectionId="gameControl" sectionName={name}>
+    <div id="gameControlContent">{content}</div>
+  </UISection>
+}
 
-// function App() {
-//   return <MainGrid></MainGrid>
-// }
+function TrumpCard(props) {
+  return <PlayingCard value={props.trump}></PlayingCard>
+}
+
+function UISection(props) {
+  return <div id={props.sectionId}>
+    <Card>
+      <Card.Header><strong>{props.sectionName}</strong></Card.Header>
+      {props.children}
+    </Card>
+  </div>
+}
 
 function App() {
+  return <Game state={view_stub}></Game>
+}
+
+function Lobby(props) {
+  let scoreboard = null
+  if (props.state.hasLastGame) {
+    scoreboard = <UISection sectionId="scoreboard" sectionName="Scoreboard">
+      <Scoreboard playersAbbreviated={props.state["playersAbbreviated"]}
+          scoreboardTable={props.state["scoreboardTable"]}></Scoreboard>
+    </UISection>
+  }
+  return <div>
+    {scoreboard}
+    <div id="waitingCard">
+      <Card>
+        <Card.Title><span id="waitingText">Waiting for Players</span>
+          <Spinner animation="grow" role="status">
+            <span className="sr-only">Waiting Players...</span>
+          </Spinner>
+        </Card.Title>
+        <Button size="lg" variant="primary" onClick={api.startGame}>Start Game</Button>
+      </Card>
+    </div>
+    <div id="rightPane">
+      <UISection sectionId="players" sectionName="Players">
+          <PlayerList thisPlayer={props.state["thisPlayer"]}
+            actualTricks={new Array(props.state["players"].length)}
+            players={props.state["players"]}></PlayerList>
+          <Button variant="primary" onClick={api.removePlayer}>Leave Lobby</Button>
+        </UISection>
+    </div>
+  </div>
+}
+
+function Game(props) {
+  return (
+    <div>
+      <UISection sectionId="scoreboard" sectionName="Scoreboard">
+        <Scoreboard playersAbbreviated={props.state["playersAbbreviated"]}
+          scoreboardTable={props.state["scoreboardTable"]}></Scoreboard>
+      </UISection>
+      <div id="main">
+        <GameControl
+          playerState={props.state["playerState"]}
+          activePlayer={props.state["activePlaer"]}
+          currentRound={props.state["currentRound"]}
+          currentPhase={props.state["currentPhase"]}
+        ></GameControl>
+        <UISection sectionId="tableCards" sectionName="Table">
+          <TableCards tableCards={props.state["tableCards"]}
+            tablePlayers={props.state["tablePlayers"]}></TableCards>
+        </UISection>
+        <UISection sectionId="handCards" sectionName="Handcards">
+          <Handcards cards={props.state["hand_cards"]} 
+            playable={props.state["playerState"] == "play"}></Handcards>
+        </UISection>
+      </div>
+      <div id="rightPane">
+        <UISection sectionId="players" sectionName="Players">
+          <PlayerList thisPlayer={props.state["thisPlayer"]}
+            actualTricks={props.state["actualTricks"]}
+            players={props.state["players"]}></PlayerList>
+          <Button variant="primary" onClick={api.abortGame}>Abort Game</Button>
+        </UISection>
+        <UISection sectionId="trump" sectionName="Trump">
+          <TrumpCard trump={props.state["trump"]}></TrumpCard>
+        </UISection>
+      </div>
+    </div>
+  );
+}
+
+
+function App_Container() {
   return (
     <Container>
       <Row>
@@ -226,35 +298,37 @@ function App() {
               <Col>
                 <Card>
                   <Card.Header>Table</Card.Header>
-                    <TableCards tableCards={view_stub["tableCards"]} tablePlayers={view_stub["tablePlayers"]}></TableCards>
+                  <TableCards tableCards={view_stub["tableCards"]} tablePlayers={view_stub["tablePlayers"]}></TableCards>
                 </Card>
               </Col>
             </Row>
             <Row>
               <Col>
-              <Card>
-            <Card.Header>Hand Cards</Card.Header>
-            <Handcards cards={view_stub["hand_cards"]} ></Handcards>
-          </Card>
+                <Card>
+                  <Card.Header>Hand Cards</Card.Header>
+                  <Handcards cards={view_stub["hand_cards"]} ></Handcards>
+                </Card>
               </Col>
             </Row>
           </Container>
         </Col>
 
         <Col>
-          <Card>
-            <Card.Header>Players</Card.Header>
-            <PlayerList></PlayerList>
-            <Button variant="primary">Abort Game</Button>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-
-        </Col>
-        <Col>
-          
+          <Container>
+            <Row>
+              <Card>
+                <Card.Header>Players</Card.Header>
+                <PlayerList></PlayerList>
+                <Button variant="primary">Abort Game</Button>
+              </Card>
+            </Row>
+            <Row>
+              <Card>
+                <Card.Header>Trump</Card.Header>
+                <TrumpCard trump={view_stub["trump"]}></TrumpCard>
+              </Card>
+            </Row>
+          </Container>
         </Col>
       </Row>
     </Container>
