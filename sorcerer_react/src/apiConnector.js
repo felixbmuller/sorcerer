@@ -4,8 +4,14 @@ import App from './App';
 
 import $ from 'jquery';
 
+var REQUEST_BASE = "/rest/"
 
-const REQUEST_BASE = "http://127.0.0.1:5000/rest/"
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    // dev mode
+    REQUEST_BASE = "http://127.0.0.1:5000/"
+}
+
+
 const REFRESH_INTERVAL = 500
 
 let thisPlayer = null

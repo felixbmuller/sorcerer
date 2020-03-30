@@ -1,5 +1,17 @@
 # sorcerer
 
+## Deployment
+
+1. Install `nginx` according to the instructions for your distribution.
+2. Install `python3-dev, python3-pip, python3-venv`
+3. Run `bash deploy.sh` in the root directory of this project. 
+  This will install dependencies, build the react app and place all files where
+  they belong
+4. Run `bash run.sh` to start the `gunicorn` and the `nginx` server. This will stop
+  both servers if they are already running.
+5. To stop the servers, run `killall gunicorn` and `sudo service nginx stop`
+
+
 ## Improvement TODOS
 
 - Better way of showing players the last card instead of long sleep (low prio)
@@ -11,11 +23,12 @@
 - add favicon -> finish
 - add winner ranking
 - fixed width for game control and table
-- clean setup
-- add dependency file for python component
+- ~~clean setup~~
+- ~~add dependency file for python component~~
 - make deploy ready
-- players replace with tokens
+- ~~players replace with tokens~~
 - ~~strip whitespace from name~~
+- remove npm warnings
 
 ## Game Logic
 
