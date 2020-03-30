@@ -14,6 +14,8 @@
 - clean setup
 - add dependency file for python component
 - make deploy ready
+- players replace with tokens
+- ~~strip whitespace from name~~
 
 ## Game Logic
 

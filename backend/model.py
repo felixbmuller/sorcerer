@@ -378,6 +378,7 @@ class Lobby:
                 and self.game.gameState not in [GameState.ABORTED, GameState.FINISHED])
 
     def addPlayer(self, name: str) -> Player:
+        name = name.strip()
         if len(self.players) >= 6:
             raise GameError(
                 "Cannot add another player, the maximum allowed number is 6")
