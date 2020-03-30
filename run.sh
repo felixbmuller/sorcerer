@@ -14,7 +14,7 @@ set +x
 source venv/bin/activate
 set -x
 #gunicorn -w 2 -D --bind :8042 app:app
-flask run -p 8042
+flask run -p 8042 &
 set +x
 deactivate
 set -x
