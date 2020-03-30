@@ -36,6 +36,8 @@ very simple.
 - ~~players replace with tokens~~
 - ~~strip whitespace from name~~
 - remove npm warnings
+- screen freezes for the last player during the 5sec pause (only in production)
+- does serving a view during the 5sec sleep open race conditions?
 
 ## Game Logic
 

@@ -13,7 +13,7 @@ cd backend
 set +x
 source venv/bin/activate
 set -x
-gunicorn -D --bind :8042 app:app
+gunicorn -w 2 -D --bind :8042 app:app
 set +x
 deactivate
 set -x
