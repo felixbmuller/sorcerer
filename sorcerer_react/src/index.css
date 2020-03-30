@@ -11,3 +11,131 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.playingCard {
+  width: 70px;
+  height: 100px;
+  border: 1px solid #000;
+  font-size: 50px;
+  text-align: center;
+  float: left;
+  margin: 10px;
+}
+
+.BCard {
+  background-color: blue;
+  color: white;
+}
+
+.RCard {
+  background-color: red;
+  color: black;
+}
+
+.YCard {
+  background-color: yellow;
+  color: black;
+}
+
+.GCard {
+  background-color: green;
+  color: black;
+}
+
+#scoreboard {
+  float: left;
+  margin-left: 2ex;
+  margin-top: 2ex;
+  margin-right: 2ex;
+}
+
+#main {
+  float: left;
+  margin-left: 5em;
+}
+
+#gameControl {
+  margin: 2ex;
+}
+
+#gameControlContent {
+  margin: 1ex;
+}
+
+.gameControlForm label {
+  margin-right: 1ex;
+}
+
+.gameControlForm input {
+  margin-right: 1ex;
+}
+
+#tableCards {
+  margin: 2ex;
+  margin-top: 4ex;
+}
+
+#handCards {
+  margin-left: 2ex;
+  position: absolute;
+  bottom: 2ex;
+}
+
+#rightPane {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#players {
+  margin: 2ex;
+  min-width: 25ex;
+}
+
+#trump {
+  margin: 2ex;
+  align-content: center;
+}
+
+.gameState {
+  background-color: yellow;
+  padding: 10px;
+}
+
+#tricksInputField {
+  width: 2m;
+}
+
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+#waitingCard {
+  position: absolute;
+  width: 350px;
+  height: 300px;
+  z-index: 15;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -175px;
+}
+
+#waitingText {
+  padding: 1ex;
+  margin: 2ex;
+}
+
+.bottomcorner {
+  position:absolute;
+  bottom:0;
+  right:0;
+}

@@ -1,8 +1,4 @@
 import React from 'react';
-import './App.css';
-import './App.scss';
-import "react-grid-layout/css/styles.css";
-import "react-resizable/css/styles.css";
 
 import $ from 'jquery';
 
@@ -19,8 +15,6 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Spinner from 'react-bootstrap/Spinner'
 import Modal from 'react-bootstrap/Modal'
-
-import GridLayout from 'react-grid-layout';
 
 import * as api from "./apiConnector"
 

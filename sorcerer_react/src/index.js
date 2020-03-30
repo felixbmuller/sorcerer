@@ -1,7 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
-import {App, NameModal} from './App';
+import './App.scss';
+
 import * as serviceWorker from './serviceWorker';
 import * as api from "./apiConnector"
 

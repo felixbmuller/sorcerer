@@ -8,7 +8,7 @@
 - Leichtes grau als Hintergrund
 - ~~add "reset server" button~~
 - improve error messages
-- add favicon
+- add favicon -> finish
 - add winner ranking
 - fixed width for game control and table
 - clean setup
