@@ -28,18 +28,21 @@ very simple.
 - ~~add "reset server" button~~
 - improve error messages
 - add favicon -> finish
-- add winner ranking
+- **add winner ranking**
 - fixed width for game control and table
 - ~~clean setup~~
 - ~~add dependency file for python component~~
-- make deploy ready
+- ~~make deploy ready~~
 - ~~players replace with tokens~~
 - ~~strip whitespace from name~~
 - remove npm warnings
 - screen freezes for the last player during the 5sec pause (only in production)
-- rewrite model to serve requests during the 5sec pause
+  - rewrite model to serve requests during the 5sec pause?
+  - Occurs with gunicorn but not with flask
 
 ## Game Logic
+
+**Note:** This is outdated.
 
 1. An user visits the landing page
   - He is automatically registered for the game and gets a random animal name
