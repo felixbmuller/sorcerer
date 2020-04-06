@@ -39,6 +39,13 @@ very simple.
 - screen freezes for the last player during the 5sec pause (only in production)
   - rewrite model to serve requests during the 5sec pause?
   - Occurs with gunicorn but not with flask
+  - At least change `run.sh` so that the server still runs if ssh connection is closed
+- Quit game link geh nicht
+- Stich-Eingabe und Button abgeschnitten -> Zeilenumbruch
+- Allg. kleine Bildschirme testen
+- Trump-Feld nach oben zwischen Control und Players ziehen
+- Cookie setzen mit Token, um Verbindung zu erhalten
+- Handkarten überschneiden sich mit Trumpffeld ab 8 Karten
 
 ## Game Logic
 
