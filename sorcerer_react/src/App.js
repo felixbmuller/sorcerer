@@ -18,53 +18,6 @@ import Modal from 'react-bootstrap/Modal'
 
 import * as api from "./apiConnector"
 
-var view_stub = {
-  "players": ["Felix", "Anna Lena", "Cat"],
-  "playersAbbreviated": ["F", "AL", "C"],
-  "scoreboardTable": [
-    [20, 0, -10, 0, 20, 0],
-    [50, 1, 10, 0, 10, 1],
-    ["", 2, "", 1, "", 0],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-  ],
-  "thisPlayer": "Felix",
-  "hasTrumpCard": false,
-  "trump": { "suit": "Y", "rank": "Z" },
-  "currentRound": 3,
-  "currentPhase": "Play",
-  "playerState": "play",
-  "illegal_tricks": 0,
-  "activePlayer": "Fox",
-  "tablePlayers": ["Cat", "Dog"],
-  "tableCards": [
-    { "suit": "R", "rank": "13" },
-    { "suit": "Y", "rank": "N" },
-  ],
-  "hand_cards": [
-    { "suit": "B", "rank": "13" },
-    { "suit": "G", "rank": "Z" },
-  ],
-  "actualTricks": [0, 2, 1],
-  "hasLastGame": true,
-  "isLobbyMode": true,
-}
-
 function PlayingCard(props) {
   var colorCode = ""
   if (["R", "G", "B", "Y"].includes(props.value["suit"])) {

@@ -63,7 +63,6 @@ def startgame():
 
 @app.route("/rest/stopgame")
 def stopgame():
-    authPlayer(request.args["player"])
     return _perform_request(request, lobby.stopGame)
 
 @app.route("/rest/announcetricks")

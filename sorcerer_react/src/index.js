@@ -10,10 +10,7 @@ window.$ = $;
 window.jQuery = jQuery;
 
 
-const name = prompt("Enter your name (or empty for random name)")
-
-api.init(name)
-
+api.init()
 
 /*
 ReactDOM.render(

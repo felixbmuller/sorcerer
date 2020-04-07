@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
+import Cookie from 'js-cookie';
 import $ from 'jquery';
 
 var REQUEST_BASE = "/rest/"
@@ -30,13 +31,13 @@ function formatParams(params) {
 
 function refreshPage(repeat = true) {
 
-    if(stopRefresh) {
+    if (stopRefresh) {
         ReactDOM.render(
             <React.StrictMode>
-              <p>You can now close this page.</p>
+                <p>You can now close this page.</p>
             </React.StrictMode>,
             document.getElementById('root')
-          );
+        );
         return
     }
 
@@ -44,15 +45,15 @@ function refreshPage(repeat = true) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (this.status != 200 || this.responseText.startsWith("Error:")) {
-                alert(this.responseText)
+                alert(this.status.toString() + " " + this.statusText + " - " + this.responseText)
             } else {
                 if (this.responseText != previousJson) {
-                ReactDOM.render(
-                    <React.StrictMode>
-                      <App state={JSON.parse(this.responseText)}/>
-                    </React.StrictMode>,
-                    document.getElementById('root')
-                  );
+                    ReactDOM.render(
+                        <React.StrictMode>
+                            <App state={JSON.parse(this.responseText)} />
+                        </React.StrictMode>,
+                        document.getElementById('root')
+                    );
                 }
                 previousJson = this.responseText
             }
@@ -62,7 +63,7 @@ function refreshPage(repeat = true) {
             }
         }
     };
-    xhttp.open("GET", REQUEST_BASE + "getjson" + formatParams({player: thisPlayer}), true);
+    xhttp.open("GET", REQUEST_BASE + "getjson" + formatParams({ player: thisPlayer }), true);
     xhttp.send();
 
 }
@@ -79,7 +80,7 @@ function backend_call(action, params) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (this.status != 200 || this.responseText.startsWith("Error:")) {
-                alert(this.responseText)
+                alert(this.status.toString() + " " + this.statusText + " - " + this.responseText)
             } else {
                 refreshPage(false)
             }
@@ -91,19 +92,19 @@ function backend_call(action, params) {
 
 export function resetServer() {
     const ok = window.confirm(
-            "You are about to reset the game server.\n\nThis will kick everybody " +
-            "out of the lobby. You should only do this if there is a " +
-            "non-responding player (e.g. because somebody closed this page " +
-            "without clicking 'Leave lobby' beforehand). Everybody currently in " +
-            "the lobby will see a weird error message and needs to reload the page.\n\n" +
-            "Do you really want to continue?")
+        "You are about to reset the game server.\n\nThis will kick everybody " +
+        "out of the lobby. You should only do this if there is a " +
+        "non-responding player (e.g. because somebody closed this page " +
+        "without clicking 'Leave lobby' beforehand). Everybody currently in " +
+        "the lobby will see a weird error message and needs to reload the page.\n\n" +
+        "Do you really want to continue?")
     if (ok) {
         backend_call("resetserver", {})
     }
 }
 
 export function playCard(card) {
-    backend_call("playcard", {player: thisPlayer, card: card})
+    backend_call("playcard", { player: thisPlayer, card: card })
 }
 
 export function abortGame() {
@@ -112,7 +113,7 @@ export function abortGame() {
 
 export function announceTricks() {
     const n = $("#tricksInput").val()
-    backend_call("announcetricks", {player: thisPlayer, n: n})
+    backend_call("announcetricks", { player: thisPlayer, n: n })
 }
 
 
@@ -125,7 +126,7 @@ export function removePlayer() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (this.status != 200 || this.responseText.startsWith("Error:")) {
-                alert(this.responseText)
+                alert(this.status.toString() + " " + this.statusText + " - " + this.responseText)
             } else {
                 stopRefresh = true
             }
@@ -136,37 +137,45 @@ export function removePlayer() {
 }
 
 
-export function init(name) {
+export function init() {
+
+    thisPlayer = Cookie.get("playerToken")
+
+    // Run Ajax request to check if the token is still valid
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (this.status != 200 || this.responseText.startsWith("Error:")) {
-                alert(this.responseText + " Reload page.")
+                // Token not valid -> request new token
+
+                const name = prompt("Enter your name (or empty for random name)")
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        if (this.status != 200 || this.responseText.startsWith("Error:")) {
+                            alert(this.status.toString() + " " + this.statusText + " - " 
+                                  + this.responseText + "\nYou should reload the page.")
+                        } else {
+                            thisPlayer = this.responseText
+                            Cookie.set('playerToken', thisPlayer, { expires: 2 })
+                            refreshPage()
+                        }
+                    }
+                };
+                xhttp.open("GET", REQUEST_BASE + "addplayer" + formatParams({ 'player': name }), true);
+                xhttp.send();
+
             } else {
-                thisPlayer = this.responseText
+                // Token is valid, just start loading the page
+
                 refreshPage()
             }
         }
     };
-    xhttp.open("GET", REQUEST_BASE + "addplayer" + formatParams({ 'player': name }), true);
+    xhttp.open("GET", REQUEST_BASE + "getjson" + formatParams({ player: thisPlayer }), true);
     xhttp.send();
+
 }
 
-
-export function init_2(name) {
-    $.ajax({
-        url: REQUEST_BASE + "addplayer",
-        data: {player: name},
-        error: (obj, str) => alert("Error during init: " + str + JSON.stringify(obj)),
-        success: (data) => {
-            if (data.startsWith("Error:")) {
-                // TODO use nicer boostrap alert here
-                alert(data + ". Reload the window to retry.")
-            } else {
-                thisPlayer = data
-                refreshPage()
-            }
-        }
-    })
-}
 
