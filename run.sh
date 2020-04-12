@@ -6,7 +6,7 @@ set -x
 
 echo "Stopping servers"
 sudo service nginx stop
-killall gunicorn
+killall flask
 
 echo "Starting servers"
 cd backend
