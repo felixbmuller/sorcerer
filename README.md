@@ -46,6 +46,7 @@ very simple.
 - Trump-Feld nach oben zwischen Control und Players ziehen
 - Cookie setzen mit Token, um Verbindung zu erhalten
 - Handkarten überschneiden sich mit Trumpffeld ab 8 Karten
+- Pling-Sound, wenn dran
 
 ## Game Logic
 

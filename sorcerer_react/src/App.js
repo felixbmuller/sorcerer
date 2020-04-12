@@ -154,6 +154,33 @@ function UISection(props) {
   </div>
 }
 
+
+class Ranking extends React.Component {
+
+  renderPlayer(content, idx) {
+    var badge = null
+
+    var name = content[0]
+
+    if(idx == 0) {
+      badge = <Badge variant="primary" style={{backgroundColor: "#c9b037"}}>1st</Badge>
+    } else if (idx == 1) {
+      badge = <Badge variant="primary" style={{backgroundColor: "#b4b4b4"}}>2nd</Badge>
+    } else if (idx == 2) {
+      badge = <Badge variant="primary" style={{backgroundColor: "#ad8a56"}}>3rd</Badge>
+    }
+
+    return <ListGroup.Item>{name} {badge}</ListGroup.Item>
+
+  }
+
+  render() {
+    return <ListGroup variant="flush">
+      {this.props.ranking.map(this.renderPlayer, this)}
+    </ListGroup>
+  }
+}
+
 export function App(props) {
   if (props.state.isLobbyMode) {
     return <Lobby state={props.state}></Lobby>
@@ -171,6 +198,12 @@ function Lobby(props) {
           scoreboardTable={props.state["scoreboardTable"]}></Scoreboard>
     </UISection>
   }
+  let ranking = null
+  if (props.state.hasLastWinners) {
+    ranking = <UISection sectionId="ranking" sectionName="Ranking">
+      <Ranking ranking={props.state.ranking}></Ranking>
+    </UISection>
+  }
   return <div>
     {scoreboard}
     <div id="waitingCard">
@@ -182,6 +215,7 @@ function Lobby(props) {
         </Card.Title>
         <Button size="lg" variant="primary" onClick={api.startGame}>Start Game</Button>
       </Card>
+      {ranking}
     </div>
     <div id="rightPane">
       <UISection sectionId="players" sectionName="Players">
