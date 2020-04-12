@@ -128,8 +128,7 @@ var prevState = null
 
 function GameControl(props) {
   let content = null
-  if (prevState != null 
-    && prevState != props.playerState 
+  if (prevState != props.playerState 
     && props.playerState != "waiting" 
     && props.playerState != "pause") {
     beep()
