@@ -92,3 +92,6 @@ def _perform_request(req, func, **params):
 def _respond_error(e):
     logging.info(f"[GameError] {request.method} {request.full_path}: {e}")
     return f"Error: {e}", 400
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=8042)
