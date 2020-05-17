@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.scroll-x {
+  overflow-x: scroll;
+}
+
 .playingCard {
   width: 70px;
   height: 100px;
