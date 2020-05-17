@@ -99,7 +99,7 @@ function TableCards(props) {
 
 function Handcards(props) {
   return <Container>
-    <Row>
+    <Row className="scroll-x">
       {props.cards.map((val) => {
         return <Col>
           <PlayingCard value={val} playable={props.playable}></PlayingCard>
