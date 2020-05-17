@@ -27,6 +27,7 @@ very simple.
 
 ## Improvement TODOS
 
+- **server crashes if the first two played cards are Narr and Zauberer** (high prio)
 - Better way of showing players the last card instead of long sleep (low prio)
 - ~~Handkarten sortieren~~
 - ~~Forbid joining lobby if active game~~
@@ -53,6 +54,7 @@ very simple.
 - Cookie setzen mit Token, um Verbindung zu erhalten
 - Handkarten überschneiden sich mit Trumpffeld ab 8 Karten
 - **Pling-Sound, wenn dran**
+- Button to annoy active player
 
 ## Game Logic
 
