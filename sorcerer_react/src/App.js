@@ -118,7 +118,7 @@ function TrickAnnouncement(props) {
     <Form.Label>{text}</Form.Label>
     <Form.Control type="number" defaultValue="0" min="0" id="tricksInput" active>
     </Form.Control>
-    <Button variant="primary" onClick={api.announceTricks}>
+    <Button type="submit" variant="primary" onClick={api.announceTricks}>
       Submit
   </Button>
   </Form>
