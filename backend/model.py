@@ -204,12 +204,13 @@ class CardManager:
             return
         if "N" in card or "Z" in card:
             return  # always possible to play that
-        if "Z" in next(iter(self.roundCards.values())):  # first card wizard
+        relevantCards = [c for c in self.roundCards.values() if "N" not in c]
+        if not relevantCards:
+            return
+        if "Z" in relevantCards[0]:  # first card wizard (except for jesters)
             return  # every card allowed
-        if all("N" in c for c in self.roundCards.values()):  # only jesters
-            return  # every card allowed
-        relevantColor = next(
-            c[0] for c in self.roundCards.values() if "Z" not in c and "N" not in c)
+        # otherwise, first card which is neither jester or wizard determines color
+        relevantColor = relevantCards[0][0]
         if relevantColor in card:
             return  # right color
         if any(relevantColor in c for c in self.handCards[player] if "N" not in c and "Z" not in c):
