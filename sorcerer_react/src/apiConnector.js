@@ -9,7 +9,7 @@ var REQUEST_BASE = "/rest/"
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     // dev mode
-    REQUEST_BASE = "http://127.0.0.1:5000/rest/"
+    REQUEST_BASE = "http://127.0.0.1:8042/rest/"
 }
 
 
