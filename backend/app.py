@@ -26,7 +26,7 @@ def authPlayer(token: str) -> str:
         return token2player[token]
     else:
         raise GameError("There is no valid player with your access token. \n"
-                        "Problably somebody reset the server and you need to "
+                        "Probably somebody reset the server and you need to "
                         "reload the page to join again.")
 
 @app.route("/rest/getjson")
