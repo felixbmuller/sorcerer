@@ -1,6 +1,16 @@
 # sorcerer
 
+This is a broswer game version of the card game Wizard ([Wikipedia article](https://en.wikipedia.org/wiki/Wizard_(card_game))). 
+Simply deploy it to a server, share its domain name or IP address and you can play with friends.
+
+![screenshort of the game](https://i.imgur.com/7qsGWjE.png)
+
+There are some open issues, especially concerning (the absolute lack of) responsivness, but it does what it is supposed to do!
+
 ## Deployment
+
+The following works fine with a Free Tier AWS Ubuntu instance which is used for nothing else. 
+Otherwise please have a look at the scripts before you run them.
 
 1. Install `nginx` according to the instructions for your distribution.
 2. Install `python3-dev, python3-pip, python3-venv`
@@ -16,11 +26,8 @@
   what files it includes.
 8. Run `sudo update-rc.d nginx defaults` to enable autostart for nginx. 
    Add `home/ubuntu/sorcerer/startup.sh` to `/etc/rc.local`. If this file does not exist, 
-   you can copy the version in `deployment/` to `/etc/. This enables autostart for flask.
+   you can copy the version in `deployment/` to `/etc/`. This enables autostart for flask.
 7. To stop the servers, run `killall flask` and `sudo service nginx stop`
 
-**Note:** This is quite hacky because I need to use the flask development server instead
+Note: This is quite hacky because I need to use the flask development server instead
 of gunicorn (thats an open issue).
-
-Please have a look at `deploy.sh` if it is suitable for your system before you run it. It is
-very simple.
