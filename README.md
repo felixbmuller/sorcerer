@@ -47,4 +47,4 @@ of gunicorn (thats an open issue).
 1. Run `python backend/app.py` to start the backend
 2. Enter the `sorcerer_react` directory and run `npm start` to start the frontend.
 
-This will expose the frontend on [http://localhost:3000/]. The development servers will reload upon code changes.
+This will expose the frontend on http://localhost:3000/. The development servers will reload upon code changes.
