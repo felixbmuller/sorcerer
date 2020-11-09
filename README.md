@@ -31,3 +31,20 @@ Otherwise please have a look at the scripts before you run them.
 
 Note: This is quite hacky because I need to use the flask development server instead
 of gunicorn (thats an open issue).
+
+## Development
+
+### Setup
+
+1. Install `python3-dev, python3-pip, python3-venv`
+2. Run `pip install -r requirements.txt` in the `backend` folder
+3. Install a recent version of `npm` (problably not in your distros repo, use the website) and make
+  sure that the executable is in path
+4. Run `npm install` in the `sorcerer_react` folder
+
+### Start Development Environment
+
+1. Run `python backend/app.py` to start the backend
+2. Enter the `sorcerer_react` directory and run `npm start` to start the frontend.
+
+This will expose the frontend on [http://localhost:3000/]. The development servers will reload upon code changes.
