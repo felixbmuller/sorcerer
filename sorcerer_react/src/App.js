@@ -284,33 +284,5 @@ function Game(props) {
   );
 }
 
-export function NameModal(props) {
-  // TODO Sane behaviour for ENTER
-  // TODO Fix this ting
-  var showModal = true
-  var handler = function() {
-    const input = $("#nameInput").val()
-    showModal = false
-    props.modalHandler(input)
-  }
-  return <Modal show={showModal}>
-          <Modal.Header>
-            <Modal.Title>Choose a Name</Modal.Title>
-          </Modal.Header>
-  <Modal.Body>
-    <p>Enter a player name (or empty for a random name)</p>
-    <Form inline onSubmit={handler}>
-    <Form.Control type="text" id="nameInput">
-    </Form.Control>
-  </Form>
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="primary" onClick={handler}>
-      Select
-    </Button>
-  </Modal.Footer>
-</Modal>
-}
-
 export default App;
 
