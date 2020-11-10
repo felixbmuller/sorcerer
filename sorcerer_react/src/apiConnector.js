@@ -70,7 +70,7 @@ function refreshPage(repeat = true) {
 
 function backend_call(action, params) {
     /**
-     * silent is set to True to surpress error messages, e.g. when closing the window
+     * silent is set to True to suppress error messages, e.g. when closing the window
      */
     if (thisPlayer == null) {
         alert("Tried to send a request before the player was added to the server!")
@@ -163,8 +163,11 @@ export function init() {
                         }
                     }
                 };
-                xhttp.open("GET", REQUEST_BASE + "addplayer" + formatParams({ 'player': name }), true);
-                xhttp.send();
+
+                if (name != null) {
+                    xhttp.open("GET", REQUEST_BASE + "addplayer" + formatParams({ 'player': name }), true);
+                    xhttp.send();
+                }
 
             } else {
                 // Token is valid, just start loading the page
